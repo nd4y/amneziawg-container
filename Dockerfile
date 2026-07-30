@@ -18,9 +18,11 @@ ARG AWGTOOLS_REF
 RUN apk add --no-cache build-base linux-headers git bash
 WORKDIR /src
 RUN git clone --depth 1 --branch "${AWGTOOLS_REF}" https://github.com/amnezia-vpn/amneziawg-tools.git .
+# Link awg statically: the same binary then runs both here (musl) and on glibc
+# hosts, so the image doubles as the source of host binaries.
 RUN cd src \
- && make -j"$(nproc)" \
- && make install DESTDIR=/staged PREFIX=/usr \
+ && make -j"$(nproc)" LDFLAGS="-static" \
+ && make install DESTDIR=/staged PREFIX=/usr LDFLAGS="-static" \
       WITH_BASHCOMPLETION=no WITH_SYSTEMDUNITS=no WITH_WGQUICK=yes
 # Upstream has renamed wg->awg over time; accept either and normalise the names.
 RUN mkdir -p /out \

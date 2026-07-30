@@ -51,6 +51,11 @@ jobs:
           docker pull "$IMG"
           docker run --rm --entrypoint /bin/sh "$IMG" -c \
             'set -e; ls -la /usr/bin/amneziawg-go /usr/bin/awg /usr/bin/awg-quick; awg --version; amneziawg-go --version 2>&1 | head -2 || true'
+          # awg must be static so the same binary also runs on glibc hosts.
+          docker run --rm --entrypoint /bin/sh "$IMG" -c \
+            'ldd /usr/bin/awg 2>&1 | grep -q "Not a valid dynamic program\|not a dynamic executable" \
+               || { echo "FAIL: awg is dynamically linked"; ldd /usr/bin/awg; exit 1; }'
+          echo "awg is statically linked"
 
       # RouterOS can import a plain image tar when a registry pull is awkward.
       - name: Export image tar for RouterOS import
