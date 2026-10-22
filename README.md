@@ -21,9 +21,9 @@ image tar is easier than pulling from a registry.
 
 Versions are pinned by build args:
 
-| Arg | Default | What it selects |
-|---|---|---|
-| `AWGGO_TAG` | `v3.0.2` | `amneziawg-go` release tag |
+| Arg            | Default  | What it selects                                                    |
+| -------------- | -------- | ------------------------------------------------------------------ |
+| `AWGGO_TAG`    | `v3.0.2` | `amneziawg-go` release tag                                         |
 | `AWGTOOLS_REF` | `master` | `amneziawg-tools` ref (AWG 3.0 parameters are already in `master`) |
 
 ## Usage
@@ -67,3 +67,7 @@ weakens the cipher without producing any error.
 
 Obfuscation parameters are per-interface, not per-peer, so every node in a mesh
 that shares one interface must use an identical set.
+
+## Development standard
+
+This repository adopts version 0.4.0 of the shared development standard. Read the [English guide](docs/en/development-standard.md) or [Russian guide](docs/ru/development-standard.md). The local toolkit checks staged secrets, changed-file formatting and bilingual documentation before merge. Existing product CI remains in place. Adoption is in progress; product acceptance and legacy-document translation are recorded separately in .repo-policy.json.
